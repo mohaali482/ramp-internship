@@ -12,7 +12,6 @@ export function App() {
   const { data: employees, ...employeeUtils } = useEmployees()
   const { data: paginatedTransactions, ...paginatedTransactionsUtils } = usePaginatedTransactions()
   const { data: transactionsByEmployee, ...transactionsByEmployeeUtils } = useTransactionsByEmployee()
-  const [isLoading, setIsLoading] = useState(false) // TODO: remove this for Bug 5 - Part 1. Couldn't remove this becuase of callout #2
 
   const transactions = useMemo(
     () => paginatedTransactions?.data ?? transactionsByEmployee ?? null,
@@ -20,13 +19,11 @@ export function App() {
   )
 
   const loadAllTransactions = useCallback(async () => {
-    setIsLoading(true) // TODO: remove this for Bug 5 - Part 1. Couldn't remove this becuase of callout #2
     transactionsByEmployeeUtils.invalidateData()
 
     await employeeUtils.fetchAll()
     await paginatedTransactionsUtils.fetchAll()
 
-    setIsLoading(false)
   }, [employeeUtils, paginatedTransactionsUtils, transactionsByEmployeeUtils])
 
   const loadTransactionsByEmployee = useCallback(
